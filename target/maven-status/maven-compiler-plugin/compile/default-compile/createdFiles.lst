@@ -1,0 +1,4 @@
+com\frank\demo\controller\DemoController.class
+com\frank\shiro\filter\PermissionFilter.class
+com\frank\shiro\token\MyRealm.class
+com\frank\shiro\token\ShiroToken.class
