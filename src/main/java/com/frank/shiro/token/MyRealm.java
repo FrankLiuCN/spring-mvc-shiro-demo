@@ -25,18 +25,18 @@ public class MyRealm extends AuthorizingRealm {
 		String userName = (String) principalCollection.fromRealm(getName()).iterator().next();
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		Set<String> set = new HashSet<String>();
-		if ("admin" == userName) {
+		if ("admin".equals(userName)) {
 			set.add("admin");
 			info.setRoles(set);
 			Set<String> adminPerms = new HashSet<String>();
 			adminPerms.add("/user/list");
 			adminPerms.add("/user/details");
-			info.setStringPermissions(adminPerms);
-		} else if ("frank" == userName) {
+			info.addStringPermission("user:list");
+		} else if ("frank".equals(userName)) {
 			set.add("user");
 			info.setRoles(set);
 			Set<String> userPerms = new HashSet<String>();
-			userPerms.add("/user/list");
+			userPerms.add("user:list2");
 			info.setStringPermissions(userPerms);
 		}
 		return info;

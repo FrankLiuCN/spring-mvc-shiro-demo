@@ -6,6 +6,8 @@ import java.util.Map;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,11 +36,11 @@ public class DemoController {
 		try {
 			SecurityUtils.getSubject().login(token);
 			resultMap.put("status", 200);
-			resultMap.put("message", "��¼�ɹ�");
+			resultMap.put("message", "锟斤拷录锟缴癸拷");
 			resultMap.put("back_url", "home");
 		}catch (AccountException e) {
 			resultMap.put("status", 500);
-			resultMap.put("message", "�ʺŻ��������");
+			resultMap.put("message", "锟绞号伙拷锟斤拷锟斤拷锟斤拷锟�");
 		} catch (Exception e) {
 			resultMap.put("status", 500);
 			resultMap.put("message", e.getMessage());
@@ -46,18 +48,22 @@ public class DemoController {
 		return resultMap;
 	}
 	
-	@RequestMapping(value="/unauthoriaed")
+	@RequestMapping(value="/unauthorized",method=RequestMethod.GET)
 	public String Unauthoriaed() {
+		System.out.println("unauthorized");
 		return "unauthorized";
 	}
 	
 	@RequestMapping(value="/home")
+	@RequiresAuthentication
 	public String home() {
 		return "home";
 	}
 	
 	@RequestMapping(value="/user/list")
+	@RequiresPermissions("user:list")
 	public String UserList(Model model) {
+		System.out.println("UserList");
 		return "UserList";
 	}
 	

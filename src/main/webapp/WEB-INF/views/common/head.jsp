@@ -10,13 +10,13 @@
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="#">首页</a></li>
-				<li><a href="user/list">用户列表</a></li>
+				<li><a href="<%=basePath%>/user/list">用户列表</a></li>
 			</ul>
 
 			<shiro:user>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#"><shiro:principal/></a></li>
-					<li><a href="logout">注销</a></li>
+					<li><a href="<%=basePath%>/logout">注销</a></li>
 				</ul>
 			</shiro:user>
 		</div>

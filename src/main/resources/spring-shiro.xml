@@ -18,7 +18,7 @@
 	<bean id="myRealm" class="com.frank.shiro.token.MyRealm" />
 	<bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
-	
+
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="myRealm"></property>
 		<property name="cacheManager" ref="cacheManager"></property>
@@ -41,12 +41,35 @@
 				/libs/**=anon
 				/unauthorized=anon
 				/login=anon
-				/home=authc
-				/logout=authc
-				/**=permission
+				/logout=logout
+				/ = user
+				/** = user
 			</value>
 		</property>
 	</bean>
-	
 
+	<!-- AOP式方法级权限检查 -->
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor">
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.apache.shiro.authz.UnauthenticatedException">
+					redirect:/login
+				</prop>
+				<prop key="org.apache.shiro.authz.UnauthorizedException">
+					redirect:/unauthorized
+				</prop>
+			</props>
+		</property>
+		<property name="defaultErrorView" value="error/genericView"/>
+	</bean>
 </beans>
